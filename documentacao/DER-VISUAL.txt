@@ -1,0 +1,169 @@
+DIAGRAMA ENTIDADE RELACIONAMENTO - GESTÃO DE CAFETERIA
+=========================================================
+
+INSTRUÇÕES PARA CRIAR O DIAGRAMA:
+Acesse: https://app.diagrams.net/ (draw.io)
+Crie as seguintes tabelas e relacionamentos:
+
+-----------------------------------------------------------
+TABELA 1: usuarios
+-----------------------------------------------------------
+┌──────────────────────────────────────┐
+│              usuarios                │
+├──────────────────────────────────────┤
+│ (PK) id                              │
+│       nome                           │
+│       email (UNIQUE)                 │
+│       senha                          │
+│       cargo                          │
+│       data_criacao                   │
+└──────────────────────────────────────┘
+
+ATRIBUTOS:
+- id: INTEGER, PRIMARY KEY
+- nome: TEXT NOT NULL
+- email: TEXT UNIQUE NOT NULL
+- senha: TEXT NOT NULL
+- cargo: TEXT NOT NULL
+- data_criacao: DATETIME
+
+-----------------------------------------------------------
+TABELA 2: categorias
+-----------------------------------------------------------
+┌──────────────────────────────────────┐
+│             categorias               │
+├──────────────────────────────────────┤
+│ (PK) id                              │
+│       nome (UNIQUE)                  │
+│       descricao                      │
+│       data_criacao                   │
+└──────────────────────────────────────┘
+
+ATRIBUTOS:
+- id: INTEGER, PRIMARY KEY
+- nome: TEXT NOT NULL UNIQUE
+- descricao: TEXT
+- data_criacao: DATETIME
+
+-----------------------------------------------------------
+TABELA 3: insumos
+-----------------------------------------------------------
+┌──────────────────────────────────────┐
+│              insumos                │
+├──────────────────────────────────────┤
+│ (PK) id                              │
+│ (FK) categoria_id                     │
+│       nome                           │
+│       descricao                      │
+│       unidade_medida                 │
+│       estoque_minimo                 │
+│       estoque_atual                  │
+│       preco_unitario                 │
+│       data_criacao                   │
+└──────────────────────────────────────┘
+
+ATRIBUTOS:
+- id: INTEGER, PRIMARY KEY
+- categoria_id: INTEGER (FK -> categorias.id)
+- nome: TEXT NOT NULL
+- descricao: TEXT
+- unidade_medida: TEXT NOT NULL
+- estoque_minimo: REAL NOT NULL
+- estoque_atual: REAL DEFAULT 0
+- preco_unitario: REAL
+- data_criacao: DATETIME
+
+-----------------------------------------------------------
+TABELA 4: movimentacoes
+-----------------------------------------------------------
+┌──────────────────────────────────────┐
+│          movimentacoes              │
+├──────────────────────────────────────┤
+│ (PK) id                              │
+│ (FK) insumo_id                       │
+│ (FK) usuario_id                      │
+│       tipo (CHECK)                   │
+│       quantidade                     │
+│       data_movimentacao              │
+│       observacao                     │
+│       data_registro                  │
+└──────────────────────────────────────┘
+
+ATRIBUTOS:
+- id: INTEGER, PRIMARY KEY
+- insumo_id: INTEGER NOT NULL (FK -> insumos.id)
+- usuario_id: INTEGER NOT NULL (FK -> usuarios.id)
+- tipo: TEXT CHECK(IN 'entrada', 'saida')
+- quantidade: REAL NOT NULL
+- data_movimentacao: DATETIME NOT NULL
+- observacao: TEXT
+- data_registro: DATETIME
+
+-----------------------------------------------------------
+RELACIONAMENTOS
+-----------------------------------------------------------
+
+1. usuarios ←→ movimentacoes
+   - RELACIONAMENTO: 1 para N (um para muitos)
+   - CARDINALIDADE: Um usuário pode realizar muitas movimentações
+   - OBRIGATORIEDADE: Uma movimentação DEVE ter um usuário
+
+2. insumos ←→ movimentacoes
+   - RELACIONAMENTO: 1 para N (um para muitos)
+   - CARDINALIDADE: Um insumo pode ter muitas movimentações
+   - OBRIGATORIEDADE: Uma movimentação DEVE referenciar um insumo
+
+3. categorias ←→ insumos
+   - RELACIONAMENTO: 1 para N (um para muitos)
+   - CARDINALIDADE: Uma categoria pode ter muitos insumos
+   - OBRIGATORIEDADE: Um insumo PODE ter uma categoria (opcional)
+
+-----------------------------------------------------------
+LEGENDA DE SÍMBOLOS
+-----------------------------------------------------------
+
+(PK) = Primary Key (Chave Primária)
+(FK) = Foreign Key (Chave Estrangeira)
+--→  = Relacionamento 1 para N
+▪    = Obrigatório
+○    = Opcional
+📊  = No draw.io, use setas indicando direção
+
+-----------------------------------------------------------
+ORIENTAÇÃO PARA DESENHO
+-----------------------------------------------------------
+
+No draw.io ou Lucidchart:
+
+1. Crie 4 retângulos (tabelas)
+2. Liste os campos dentro de cada retângulo
+3. Destaque chaves primárias (PK) com cor diferente
+4. Destaque chaves estrangeiras (FK) com cor diferente
+5. Desenhe setas de relacionamento:
+   
+   usuarios ---1--- N--> movimentacoes
+   (seta do lado "1" aponta para o lado "N")
+   
+   insumos ---1--- N--> movimentacoes
+   
+   categorias ---1--- N--> insumos
+
+6. Coloque rótulos nas setas indicando o relacionamento
+7. Exporte como PNG ou JPEG
+8. Salve como: DER.png ou DER.jpeg
+
+-----------------------------------------------------------
+DESCRIÇÃO TEXTUAL DO FLUXO
+-----------------------------------------------------------
+
+USUÁRIOS fazem MOVIMENTAÇÕES de estoque de INSUMOS.
+INSUMOS pertencem a CATEGORIAS.
+MOVIMENTAÇÕES registram entrada e saída de INSUMOS.
+MOVIMENTAÇÕES registram qual USUÁRIO fez a operação.
+
+Este DER garante:
+✅ Rastreabilidade de movimentações
+✅ Controle de estoque
+✅ Organização por categorias
+✅ Auditoria (usuário responsável)
+

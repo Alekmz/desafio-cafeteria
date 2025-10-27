@@ -1,0 +1,58 @@
+.gestao-estoque {
+  margin-top: 0;
+}
+
+.form-section, .list-section {
+  margin-bottom: 40px;
+}
+
+.form-section h3, .list-section h3 {
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.insumo-info {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.insumo-info p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-ok {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.low-stock-row {
+  background-color: #fff8e1;
+}
+
+.low-stock-row:hover {
+  background-color: #ffe082;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
